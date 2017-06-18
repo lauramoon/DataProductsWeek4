@@ -1,0 +1,46 @@
+---
+title: "Predicting Tree Volume (Data Products Week 4)"
+author: "Laura Moon"
+date: "June 17, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tree Volume: Motivation and Background
+
+The approximate volume of timber that can be gotten from a tree can be estimated from the girth (diameter) of that tree. This estimation can assist in determining when or if a tree is to be cut down.
+
+This app predicts the volume of timber from the tree's girth using a simple linear model on data from other trees. Specifically, it uses the 31 measurements of black cherry trees found in the "trees" dataset that comes with R.
+
+## Tree Volume: The Prediction Model
+The code for the linear model is simple:
+```{r}
+model <- lm(Volume ~ Girth, data = trees)
+```
+The prediction uses the user's input value, selected from a slider. That value could be, for example, 12:
+```{r}
+GirthInput <- 12
+PredModel <- predict(model, newdata = data.frame(Girth = GirthInput))
+PredModel
+```
+
+## Tree Volume: Graph of Data and Model
+The app also shows a graph of all the data used in the prediction as well as a line representing the linear model:
+```{r, echo=FALSE}
+plot(trees$Girth, trees$Volume, xlab = "Girth (in)", 
+         ylab = "Volume (cu ft)", bty = "n", pch = 16,
+         xaxp = c(8,22,7), ylim = c(0, 80), 
+         main = "Volume and Girth of Black Cherry Trees")
+    abline(model, col = "purple", lwd = 2)
+    points(GirthInput, PredModel, col = "green", pch = 16, cex = 2)
+```
+
+## Tree Volume: Future Work
+A much more useful version of this app would include many more measurements from different types of trees, not only black cherry trees. This additional data would allow the user to select the type of tree and make the prediction based on the measurements from that type of tree.
+
+Another possible enhancement would allow the user to add data to be used in predictions.
+
+THE END
